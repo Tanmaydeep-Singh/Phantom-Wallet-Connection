@@ -1,15 +1,13 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 
 const App = () => {
 
-
+  
   const [walletAddress, setWalletAddress] = useState(null);
-  const [balance, setBalance] = useState("");
-  const [pubkey, setPubkey] = useState("");
-
-
+  // const [balance, setBalance] = useState("");
+  // const [pubkey, setPubkey] = useState("");
 
 
 
@@ -19,48 +17,46 @@ const App = () => {
 
       if (solana) {
         if (solana.isPhantom) {
-          console.log("Wallet Found");
-
+          // console.log("Wallet Found");
           const response = await solana.connect({ onlyIfTrusted: true });
-
-          console.log(
-            "connected with publickey:",
-            response.publicKey.toString()
-          );
+          // console.log(
+          //   "connected with publickey:",
+          //   response.publicKey.toString()
+          // );
           setWalletAddress(response.publicKey.toString());
         }
       } else {
+        alert("Get a phantom wallet")
         console.log("Get a phantom wallet");
       }
     } catch (error) {
-      console.error(error);
+      // console.error(error);
     }
   };
+
 
   const connectWallet = async () => {
     checkIfWalletIsConnected();
     const { solana } = window;
     if (solana) {
-      console.log("Solana", solana);
-
       const response = await solana.connect();
-      console.log("connected with public key", response.publicKey);
+      // console.log("connected with public key", response.publicKey);
       setWalletAddress(response.publicKey.toString());
+      
     }
   };
 
+
+
+
   const disconnectWallet = async () => {
-    checkIfWalletIsConnected();
+    const { solana } = window;
+    if (solana) {
+      await solana.disconnect();
+      setWalletAddress(null);
 
-    // const { solana } = window;
-    // if (solana) {
-      // console.log("Solana", solana);
-
-      //  solana.disconnect();
-
-      // console.log("connected with public key", response.publicKey);
-      // setWalletAddress(response.publicKey.toString());
-    // }
+        // disconnectWallet()
+    }
   };
 
 
